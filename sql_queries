@@ -1,4 +1,4 @@
-SELECT
+SELECT 
     *
 FROM
     healthcare_dataset;
@@ -6,7 +6,7 @@ FROM
 -- Data Cleaning
 
 -- 1. Removing leading and trailing spaces from all columns
-SELECT
+SELECT 
     `Name`,
     TRIM(`Name`) AS name_trimmed,
     Age,
@@ -37,9 +37,9 @@ SELECT
     TRIM(Medication) AS Medication_trimmed
 FROM
     healthcare_dataset;
-    
+
 UPDATE healthcare_dataset 
-SET 
+SET
     `Name` = TRIM(`Name`),
     Age = TRIM(Age),
     Gender = TRIM(Gender),
@@ -91,42 +91,6 @@ WHERE
 -- Exploratory Data Analysis (EDA)
 
 -- Question 1: Count of medical conditions by age groups
-SELECT
-    CASE
-        WHEN Age < 20 THEN '0-19'
-        WHEN Age BETWEEN 20 AND 29 THEN '20-29'
-        WHEN Age BETWEEN 30 AND 39 THEN '30-39'
-        WHEN Age BETWEEN 40 AND 49 THEN '40-49'
-        WHEN Age BETWEEN 50 AND 59 THEN '50-59'
-        WHEN Age BETWEEN 60 AND 69 THEN '60-69'
-        ELSE '70+'
-    END AS age_group,
-    `Medical Condition`,
-    COUNT(*) AS patient_count
-FROM
-    healthcare_dataset
-GROUP BY age_group , `Medical Condition`
-ORDER BY age_group , patient_count DESC;
-
--- Question 2: Percentage of insurance providers by age groups
-SELECT
-    CASE
-        WHEN Age < 20 THEN '0-19'
-        WHEN Age BETWEEN 20 AND 29 THEN '20-29'
-        WHEN Age BETWEEN 30 AND 39 THEN '30-39'
-        WHEN Age BETWEEN 40 AND 49 THEN '40-49'
-        WHEN Age BETWEEN 50 AND 59 THEN '50-59'
-        WHEN Age BETWEEN 60 AND 69 THEN '60-69'
-        ELSE '70+'
-    END AS age_group,
-    `Insurance Provider`,
-    COUNT(*) AS patient_count
-FROM
-    healthcare_dataset
-GROUP BY age_group , `Insurance Provider`
-ORDER BY age_group , patient_count DESC;
-
--- Question 3: Admission type in different age groups
 SELECT 
     CASE
         WHEN Age < 20 THEN '0-19'
@@ -135,7 +99,54 @@ SELECT
         WHEN Age BETWEEN 40 AND 49 THEN '40-49'
         WHEN Age BETWEEN 50 AND 59 THEN '50-59'
         WHEN Age BETWEEN 60 AND 69 THEN '60-69'
-        ELSE '70+'
+        WHEN Age BETWEEN 70 AND 79 THEN '70-79'
+        ELSE '80+'
+    END AS age_group,
+    `Medical Condition`,
+    COUNT(*) AS patient_count
+FROM
+    healthcare_dataset
+GROUP BY age_group , `Medical Condition`
+ORDER BY age_group , patient_count DESC;
+
+-- Question 2: Count of insurance providers by age groups
+SELECT 
+    CASE
+        WHEN Age < 20 THEN '0-19'
+        WHEN Age BETWEEN 20 AND 29 THEN '20-29'
+        WHEN Age BETWEEN 30 AND 39 THEN '30-39'
+        WHEN Age BETWEEN 40 AND 49 THEN '40-49'
+        WHEN Age BETWEEN 50 AND 59 THEN '50-59'
+        WHEN Age BETWEEN 60 AND 69 THEN '60-69'
+        WHEN Age BETWEEN 70 AND 79 THEN '70-79'
+        ELSE '80+'
+    END AS age_group,
+    `Insurance Provider`,
+    COUNT(*) AS patient_count
+FROM
+    healthcare_dataset
+GROUP BY age_group , `Insurance Provider`
+ORDER BY age_group , patient_count DESC;
+
+--
+SELECT 
+    `Insurance Provider`, COUNT(*)
+FROM
+    healthcare_dataset
+GROUP BY `Insurance Provider`
+ORDER BY `Insurance Provider` DESC;
+
+-- Question 3: Count of admission type in different age groups
+SELECT 
+    CASE
+        WHEN Age < 20 THEN '0-19'
+        WHEN Age BETWEEN 20 AND 29 THEN '20-29'
+        WHEN Age BETWEEN 30 AND 39 THEN '30-39'
+        WHEN Age BETWEEN 40 AND 49 THEN '40-49'
+        WHEN Age BETWEEN 50 AND 59 THEN '50-59'
+        WHEN Age BETWEEN 60 AND 69 THEN '60-69'
+        WHEN Age BETWEEN 70 AND 79 THEN '70-79'
+        ELSE '80+'
     END AS age_group,
     `Admission Type`,
     COUNT(*) AS patient_count
@@ -143,3 +154,15 @@ FROM
     healthcare_dataset
 GROUP BY age_group , `Admission Type`
 ORDER BY age_group , patient_count DESC;
+
+-- 
+SELECT 
+    `Admission Type`, 
+    COUNT(*) AS total_admissions
+FROM 
+    healthcare_dataset
+GROUP BY 
+    `Admission Type`
+ORDER BY 
+    total_admissions DESC;
+    
